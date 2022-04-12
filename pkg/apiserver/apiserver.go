@@ -7,6 +7,7 @@ import (
 	restful "github.com/emicklei/go-restful/v3"
 	log "github.com/sirupsen/logrus"
 
+	gamev1alpha1 "github.com/Mogara/OpenSGS/pkg/apis/game/v1alpha1"
 	healthv1alpha1 "github.com/Mogara/OpenSGS/pkg/apis/health/v1alpha1"
 	"github.com/Mogara/OpenSGS/pkg/apiserver/helper"
 )
@@ -50,4 +51,5 @@ func (s *APIServer) Run() error {
 
 func (s *APIServer) installAPIs() {
 	helper.Must(healthv1alpha1.AddToContainer(s.container))
+	helper.Must(gamev1alpha1.AddToContainer(s.container))
 }
