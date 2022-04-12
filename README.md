@@ -27,6 +27,7 @@
     ```bash
     # install commit-msg hook
     pre-commit install --hook-type commit-msg 
+    pre-commit install --hook-type pre-push
     # install pre-commit hook
     pre-commit install
     # test hooks
