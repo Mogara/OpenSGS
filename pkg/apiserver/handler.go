@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"net/http"
 	"runtime"
+
+	log "github.com/sirupsen/logrus"
 )
 
 func recoverHandler(panicReason interface{}, w http.ResponseWriter) {
@@ -17,7 +19,7 @@ func recoverHandler(panicReason interface{}, w http.ResponseWriter) {
 		}
 		buffer.WriteString(fmt.Sprintf("    %s:%d\r\n", file, line))
 	}
-	fmt.Print(buffer.String())
+	log.Warn(buffer.String())
 
 	headers := http.Header{}
 	if contentType := w.Header().Get("Content-Type"); len(contentType) > 0 {
