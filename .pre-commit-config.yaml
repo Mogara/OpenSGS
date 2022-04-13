@@ -1,0 +1,14 @@
+repos:
+- repo: https://github.com/commitizen-tools/commitizen
+  rev: v2.23.0
+  hooks:
+    - id: commitizen
+      stages: [commit-msg]
+- repo: https://github.com/dnephin/pre-commit-golang
+  rev: v0.5.0
+  hooks:
+    - id: go-fmt
+    - id: go-mod-tidy
+    - id: golangci-lint
+    - id: go-unit-tests
+      stages: [push]
