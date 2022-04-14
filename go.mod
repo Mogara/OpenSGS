@@ -5,6 +5,7 @@ go 1.17
 require (
 	github.com/emicklei/go-restful/v3 v3.7.4
 	github.com/gorilla/websocket v1.5.0
+	github.com/rs/cors v1.8.2
 	github.com/sirupsen/logrus v1.8.1
 	github.com/stretchr/testify v1.3.0
 )

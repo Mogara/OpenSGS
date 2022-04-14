@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	restful "github.com/emicklei/go-restful/v3"
+	"github.com/rs/cors"
 	log "github.com/sirupsen/logrus"
 
 	gamev1alpha1 "github.com/Mogara/OpenSGS/pkg/apis/game/v1alpha1"
@@ -13,17 +14,19 @@ import (
 )
 
 type APIServer struct {
-	Server    *http.Server
-	container *restful.Container
+	Server         *http.Server
+	container      *restful.Container
+	allowedOrigins []string
 }
 
-func NewAPIServer(host string, port int) *APIServer {
-	s := &APIServer{}
+func NewAPIServer(host string, port int, allowedOrigins []string) *APIServer {
 	server := &http.Server{
 		Addr: fmt.Sprintf("%s:%d", host, port),
 	}
-	s.Server = server
-	return s
+	return &APIServer{
+		Server:         server,
+		allowedOrigins: allowedOrigins,
+	}
 }
 
 func (s *APIServer) PrepareRun() error {
@@ -40,8 +43,20 @@ func (s *APIServer) PrepareRun() error {
 			log.Infof("%s %s --> %s", route.Method, route.Path, nameOfFunction(route.Function))
 		}
 	}
+	c := cors.New(cors.Options{
+		AllowCredentials: true,
+		AllowedMethods:   []string{http.MethodGet, http.MethodPost, http.MethodPut, http.MethodPatch, http.MethodDelete},
+		AllowOriginFunc: func(origin string) bool {
+			for _, allowed := range s.allowedOrigins {
+				if allowed == origin {
+					return true
+				}
+			}
+			return false
+		},
+	})
 
-	s.Server.Handler = s.container
+	s.Server.Handler = c.Handler(s.container)
 	return nil
 }
 
