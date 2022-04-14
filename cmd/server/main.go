@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"strings"
 	"syscall"
 	"time"
 
@@ -15,15 +16,19 @@ import (
 )
 
 var (
-	host     string
-	port     int
-	logLevel string
+	host           string
+	port           int
+	logLevel       string
+	allowedOrigins multipleFlag
+	debug          bool
 )
 
 func init() {
 	flag.StringVar(&host, "host", "localhost", "host to listen on")
 	flag.IntVar(&port, "port", 8080, "port to listen on")
 	flag.StringVar(&logLevel, "log-level", "info", "log level")
+	flag.Var(&allowedOrigins, "allowed-origin", "allowed request origin")
+	flag.BoolVar(&debug, "debug", false, "enable debug mode")
 	flag.Parse()
 
 	log.SetOutput(os.Stdout)
@@ -38,7 +43,7 @@ func main() {
 	done := make(chan os.Signal, 1)
 	signal.Notify(done, os.Interrupt, syscall.SIGINT, syscall.SIGTERM)
 
-	s := apiserver.NewAPIServer(host, port)
+	s := apiserver.NewAPIServer(host, port, allowedOrigins, debug)
 	if err := s.PrepareRun(); err != nil {
 		panic(err)
 	}
@@ -62,4 +67,15 @@ func main() {
 	} else {
 		log.Info("Server gracefully stopped")
 	}
+}
+
+type multipleFlag []string
+
+func (m *multipleFlag) String() string {
+	return strings.Join(*m, ",")
+}
+
+func (m *multipleFlag) Set(value string) error {
+	*m = append(*m, value)
+	return nil
 }
