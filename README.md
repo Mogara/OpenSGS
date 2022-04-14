@@ -18,6 +18,15 @@
     ```bash
     go run cmd/server/main.go
     ```
+### CLI Usage
+| flag             | description            | default   | type   |
+| ---------------- | ---------------------- | --------- | ------ |
+| --host           | host to listen on      | localhost | string |
+| --port           | port to listen on      | 8080      | number |
+| --log-level      | log level              | info      | string |
+| --allowed-origin | allowed request origin |           | array  |
+| --debug          | enable debug mode      | false     | bool   |
+
 
 ## Development
 1. Setup Go environment([v1.17](https://go.dev/doc/install))
