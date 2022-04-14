@@ -20,6 +20,7 @@ var (
 	port           int
 	logLevel       string
 	allowedOrigins multipleFlag
+	debug          bool
 )
 
 func init() {
@@ -27,6 +28,7 @@ func init() {
 	flag.IntVar(&port, "port", 8080, "port to listen on")
 	flag.StringVar(&logLevel, "log-level", "info", "log level")
 	flag.Var(&allowedOrigins, "allowed-origin", "")
+	flag.BoolVar(&debug, "debug", false, "enable debug mode")
 	flag.Parse()
 
 	log.SetOutput(os.Stdout)
@@ -41,7 +43,7 @@ func main() {
 	done := make(chan os.Signal, 1)
 	signal.Notify(done, os.Interrupt, syscall.SIGINT, syscall.SIGTERM)
 
-	s := apiserver.NewAPIServer(host, port, allowedOrigins)
+	s := apiserver.NewAPIServer(host, port, allowedOrigins, debug)
 	if err := s.PrepareRun(); err != nil {
 		panic(err)
 	}

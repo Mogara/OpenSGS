@@ -17,15 +17,17 @@ type APIServer struct {
 	Server         *http.Server
 	container      *restful.Container
 	allowedOrigins []string
+	debug          bool
 }
 
-func NewAPIServer(host string, port int, allowedOrigins []string) *APIServer {
+func NewAPIServer(host string, port int, allowedOrigins []string, debug bool) *APIServer {
 	server := &http.Server{
 		Addr: fmt.Sprintf("%s:%d", host, port),
 	}
 	return &APIServer{
 		Server:         server,
 		allowedOrigins: allowedOrigins,
+		debug:          debug,
 	}
 }
 
@@ -44,6 +46,7 @@ func (s *APIServer) PrepareRun() error {
 		}
 	}
 	c := cors.New(cors.Options{
+		Debug:            s.debug,
 		AllowCredentials: true,
 		AllowedMethods:   []string{http.MethodGet, http.MethodPost, http.MethodPut, http.MethodPatch, http.MethodDelete},
 		AllowOriginFunc: func(origin string) bool {
