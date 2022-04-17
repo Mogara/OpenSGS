@@ -24,8 +24,8 @@ func wildcardMatch(pattern, str []rune) bool {
 	for len(pattern) > 0 {
 		switch pattern[0] {
 		case '*':
-			// not match '-'(ascii: 45) with *
-			return wildcardMatch(pattern[1:], str) || (len(str) > 0 && wildcardMatch(pattern, str[1:]) && str[0] != 45)
+			// not match '-'(ascii: 0x2d/45) with *
+			return wildcardMatch(pattern[1:], str) || (len(str) > 0 && wildcardMatch(pattern, str[1:]) && str[0] != 0x2d)
 		default:
 			if len(str) == 0 || str[0] != pattern[0] {
 				return false
