@@ -49,14 +49,7 @@ func (s *APIServer) PrepareRun() error {
 		Debug:            s.debug,
 		AllowCredentials: true,
 		AllowedMethods:   []string{http.MethodGet, http.MethodPost, http.MethodPut, http.MethodPatch, http.MethodDelete},
-		AllowOriginFunc: func(origin string) bool {
-			for _, allowed := range s.allowedOrigins {
-				if allowed == origin {
-					return true
-				}
-			}
-			return false
-		},
+		AllowOriginFunc:  allowOriginFunc(s.allowedOrigins),
 	})
 
 	s.Server.Handler = c.Handler(s.container)
