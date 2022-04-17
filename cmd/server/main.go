@@ -27,7 +27,7 @@ func init() {
 	flag.StringVar(&host, "host", "localhost", "host to listen on")
 	flag.IntVar(&port, "port", 8080, "port to listen on")
 	flag.StringVar(&logLevel, "log-level", "info", "log level")
-	flag.Var(&allowedOrigins, "allowed-origin", "allowed request origin")
+	flag.Var(&allowedOrigins, "allowed-origin", "allowed request origin(support wildcard match except \"-\")")
 	flag.BoolVar(&debug, "debug", false, "enable debug mode")
 	flag.Parse()
 
