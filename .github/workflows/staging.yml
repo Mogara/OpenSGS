@@ -1,0 +1,20 @@
+name: deploy to staging environment
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - '**/README.md'
+
+jobs:
+  staging:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+          
+      - uses: akhileshns/heroku-deploy@v3.4.6
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: "opensgs-staging"
+          heroku_email: "allen.ccccnm@gmail.com"
+          usedocker: true
