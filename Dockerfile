@@ -9,4 +9,4 @@ WORKDIR /
 RUN apk add --no-cache ca-certificates
 COPY --from=builder /workspace/openSGS-server /usr/local/bin/openSGS-server
 RUN chmod +x /usr/local/bin/openSGS-server
-CMD ["sh", "-c", "/usr/local/bin/openSGS-server --port=$PORT --log-level=$LOG_LEVEL --allowed-origin=$SHORT_ALLOWED --allowed-origin=$LONG_ALLOWED"]
+CMD ["sh", "-c", "/usr/local/bin/openSGS-server --host=0.0.0.0 --port=$PORT --log-level=$LOG_LEVEL --allowed-origin=$SHORT_ALLOWED --allowed-origin=$LONG_ALLOWED"]
