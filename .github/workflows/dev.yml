@@ -9,6 +9,9 @@ on:
 jobs:
   dev:
     runs-on: ubuntu-latest
+    environment:
+      name: "develop"
+      url: "https://opensgs-dev.herokuapp.com"
     steps:
       - uses: actions/checkout@v2
           
